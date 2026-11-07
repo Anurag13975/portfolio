@@ -7,10 +7,16 @@
         root.classList.toggle("light-mode", theme === "light");
         themeIcon.className = theme === "light" ? "fa-solid fa-sun" : "fa-solid fa-moon";
     }
-    applyTheme(localStorage.getItem("theme") || "dark");
+    function readTheme() {
+        try { return localStorage.getItem("theme"); } catch (e) { return null; }
+    }
+    function saveTheme(theme) {
+        try { localStorage.setItem("theme", theme); } catch (e) { /* storage blocked */ }
+    }
+    applyTheme(readTheme() || "dark");
     themeBtn.addEventListener("click", () => {
         const next = root.classList.contains("light-mode") ? "dark" : "light";
-        localStorage.setItem("theme", next);
+        saveTheme(next);
         applyTheme(next);
     });
 
