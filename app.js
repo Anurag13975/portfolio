@@ -56,7 +56,7 @@
     document.querySelectorAll(".reveal").forEach(el => reveal.observe(el));
 
     const typed = document.getElementById("typed");
-    const roles = ["Software Engineer", "Full-Stack Developer", "Backend Engineer", "Problem Solver"];
+    const roles = ["Backend Engineer", "Java & Spring Boot Developer", "Distributed Systems Builder", "Competitive Programmer"];
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) {
         typed.textContent = roles[0];
