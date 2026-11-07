@@ -75,7 +75,8 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    const formEndpoint = "https://formsubmit.co/ajax/anuragsinghal6072@gmail.com";
+    const formEndpoint = "https://api.web3forms.com/submit";
+    const web3formsKey = "dcdba245-9c78-40a8-895b-638da422376a";
     const form = document.forms["contact-form"];
     const msg = document.getElementById("msg");
     const submitBtn = form.querySelector(".submit-btn");
@@ -96,15 +97,17 @@
             method: "POST",
             headers: { "Content-Type": "application/json", Accept: "application/json" },
             body: JSON.stringify({
-                ...data,
-                _subject: "Portfolio message: " + data.Subject,
-                _replyto: data.Email,
-                _template: "table",
-                _captcha: "false"
+                access_key: web3formsKey,
+                name: data.Name,
+                email: data.Email,
+                subject: "Portfolio message: " + data.Subject,
+                message: data.Message,
+                from_name: "Portfolio contact form",
+                botcheck: data.botcheck
             })
         })
             .then(res => res.json().then(body => {
-                if (!res.ok || String(body.success) !== "true") throw new Error(body.message);
+                if (!res.ok || !body.success) throw new Error(body.message);
                 showMsg("Message sent successfully. I'll get back to you soon!", "success");
                 form.reset();
             }))
