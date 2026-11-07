@@ -1119,6 +1119,10 @@ button {
 }
 
 /* Contact */
+.hp-field {
+  display: none;
+}
+
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1.4fr;

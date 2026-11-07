@@ -75,8 +75,8 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbySqzOB6EUntzi8trUyjBMUeCv5lmUWQxNH_yvj7TcrabWMWVGzH2_SI-srdNffG3nN/exec";
-    const form = document.forms["submit-to-google-sheet"];
+    const formEndpoint = "https://formsubmit.co/ajax/anuragsinghal6072@gmail.com";
+    const form = document.forms["contact-form"];
     const msg = document.getElementById("msg");
     const submitBtn = form.querySelector(".submit-btn");
     const submitLabel = submitBtn.querySelector(".btn-label");
@@ -91,11 +91,23 @@
         e.preventDefault();
         submitBtn.disabled = true;
         submitLabel.textContent = "Sending...";
-        fetch(scriptURL, { method: "POST", body: new FormData(form) })
-            .then(() => {
+        const data = Object.fromEntries(new FormData(form));
+        fetch(formEndpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({
+                ...data,
+                _subject: "Portfolio message: " + data.Subject,
+                _replyto: data.Email,
+                _template: "table",
+                _captcha: "false"
+            })
+        })
+            .then(res => res.json().then(body => {
+                if (!res.ok || String(body.success) !== "true") throw new Error(body.message);
                 showMsg("Message sent successfully. I'll get back to you soon!", "success");
                 form.reset();
-            })
+            }))
             .catch(() => showMsg("Something went wrong. Please email me directly.", "error"))
             .finally(() => {
                 submitBtn.disabled = false;
